@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" type="text/css" href="index.css">
+<body>
+<div id="craftbox">
+</div>
+<div id="palette">
+</div>
+<script src="sprintf.js"></script>
+<script>
+var color_state = null;
+// yes I am embarassed how bad this javascript is.
+// build the crafting table
+var craftbox = document.getElementById("craftbox");
+var table = document.createElement("table");
+var width = 8, height=8;
+for (i = 0; i < width; i++) {
+	var tr = document.createElement("tr");
+	tr.setAttribute('id', i);
+	for ( j = 0; j < height; j++ ) {
+		var td = document.createElement("td");
+		td.setAttribute('id', i + '_' + 'j');
+		td.appendChild(document.createTextNode("asdf"));
+		tr.appendChild(td);
+	}
+	table.appendChild(tr);
+}
+craftbox.appendChild(table);
+
+// build palette
+
+function partition_color_space(n) {
+	var divider = n - 1;
+	var max = 16777215; // #ffffff
+	var min = 0;
+	var partition = [];
+	var interval = Math.round(max/divider);
+	for (i = min; i <= max; i += interval) {
+		partition.push(sprintf("\#%06s", i.toString(16)));
+	}
+	return partition;
+}
+
+var palette_colors = partition_color_space(12);
+
+var palette = document.getElementById("palette");
+var table = document.createElement("table");
+var width = 3, height=4;
+for (i = 0; i < width; i++) {
+	var tr = document.createElement("tr");
+	tr.setAttribute('id', i);
+	for ( j = 0; j < height; j++ ) {
+		var td = document.createElement("td");
+		td.setAttribute('id', i + '_' + 'j');
+		td.setAttribute('style', 'background-color: ' + palette_colors[3*i + j]);
+		td.addEventListener('click', function() {
+			console.log(palette_colors);
+			console.log(color_state);
+			color_state = palette_colors[3*i + j];
+		})
+		td.appendChild(document.createTextNode(palette_colors[3*i + j]));
+		tr.appendChild(td);
+	}
+	table.appendChild(tr);
+}
+palette.appendChild(table);
+
+
+
+
+</script>
+
+
+
